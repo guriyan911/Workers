@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>top page</title>
+    <meta http-equiv="Content-Type"
+        content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1 th:text="${title}">title</h1>
+    <ul>
+	    <li th:each="dto : ${datas}"><a th:href="${dto.name}" th:text="${dto.mail}">title</a></li>
+    </ul>
+    <p th:text="test" />
+    <form method="post" action="/">
+        <input type="text" name="txt1" th:value="value" />入力はしばらくお待ちを！
+        <input type="submit" />
+    </form>
+</body>
+</html>

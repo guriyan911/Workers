@@ -3,8 +3,13 @@ package com.yuraku.workers;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
+
+import lombok.Data;
 
 @Entity
+@Table(name="mydata")
+@Data
 public class MyData {
 
     @Id
@@ -13,23 +18,10 @@ public class MyData {
     protected String name;
     protected String mail;
     protected String tel;
-    protected int age;
+    protected Integer age;
     
     public MyData() {
         super();
     }
 
-    public MyData(String name, String mail,
-            String tel, int age){
-        super();
-        this.name = name;
-        this.mail = mail;
-        this.tel = tel;
-        this.age = age;
-    }
-
-    public String toString(){
-        return "[name:" + name + ", mail:" + mail +
-            ", tel:" + tel + ", age:" + age + "]";
-    }
 }
