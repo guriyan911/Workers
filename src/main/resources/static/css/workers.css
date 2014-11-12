@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+body {  
+    text-align: center;  
+}  
+div#wrapper {  
+    width: 1100px;  
+    margin: 10px auto;  
+    text-align: left;  
+    border: 1px solid #400080;  
+}

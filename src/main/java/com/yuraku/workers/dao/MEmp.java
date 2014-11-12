@@ -1,4 +1,4 @@
-package com.yuraku.workers;
+package com.yuraku.workers.dao;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,9 +8,9 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="mydata")
+@Table(name="m_emp")
 @Data
-public class MyData {
+public class MEmp {
 
     @Id
     @GeneratedValue
@@ -19,9 +19,5 @@ public class MyData {
     protected String mail;
     protected String tel;
     protected Integer age;
-    
-    public MyData() {
-        super();
-    }
 
 }
