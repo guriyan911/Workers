@@ -1,0 +1,10 @@
+spring:
+  thymeleaf:
+    cache: false
+
+  datasource:
+    url: jdbc:mysql://localhost/macreddb
+    username: red
+    password: red
+    driverClassName: com.mysql.jdbc.Driver
+

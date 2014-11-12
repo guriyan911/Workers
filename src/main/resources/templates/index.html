@@ -1,12 +1,23 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>top page</title>
-    <meta http-equiv="Content-Type"
-        content="text/html; charset=UTF-8" />
+<title>top page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="../static/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/3.3.0/css/bootstrap.min.css}"
+	rel="stylesheet" media="screen" />
+<link href="../static/css/workers.css"
+	th:href="@{/css/workers.css}"
+	rel="stylesheet" media="screen" />
+<script src="../static/js/bootstrap.min.js"
+	th:src="@{/webjars/bootstrap/3.3.0/js/bootstrap.min.js}"></script>
+<script src="../static/js/jquery.min.js"
+	th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
 </head>
 <body>
-    <p th:text="${msg}" />
-    <a href="/hello">hello</a>
+	<p th:text="${msg}" />
+	<a href="/hello">hello</a>
+	<br/>
+	<a href="/telnet">telnet</a>
 </body>
 </html>
