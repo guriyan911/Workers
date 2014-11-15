@@ -8,6 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Telnet接続テスト
+ * charで戻り待ちをするので早いが日本語が表示できない
+ */
 @Controller
 public class TelnetController {
     private TelnetClient telnet = new TelnetClient();
@@ -39,6 +43,7 @@ public class TelnetController {
     		readUntil(prompt + " ");
     		
     		sendCommand("ls");
+    		sendCommand("\\ls"); // 頭に\をつけるとその時はLS_COLORSなどの設定が無効になる
     		disconnect();
     		
     		
