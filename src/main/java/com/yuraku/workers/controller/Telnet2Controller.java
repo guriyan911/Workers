@@ -10,7 +10,10 @@ import java.io.Writer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.Data;
+
 import org.apache.commons.net.telnet.TelnetClient;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Reader,Writer,Streamは閉じないとゴミとなってController違いでも影響を与える
  */
 @Controller
+@ConfigurationProperties(prefix="telnet")
+@Data
 public class Telnet2Controller {
+	private String server;
+	private String user;
+	private String password;
 
 	@RequestMapping("/telnet2")
 	public String telnet(Model model) {
-		String server = "genbu";
-		String user = "red";
-		String password = "yakisoba";
 		String prompt = ".*@" + server + ":.*\\$ ";
 
 		// クライアントの生成
@@ -129,5 +134,4 @@ public class Telnet2Controller {
 		System.out.print(sb.toString());
 		return sb.toString();
 	}
-
 }

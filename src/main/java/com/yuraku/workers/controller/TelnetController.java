@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
+import lombok.Data;
+
 import org.apache.commons.net.telnet.TelnetClient;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,16 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 正規表現を使ってプロンプトチェックしていないので誤作動するかも
  */
 @Controller
+@ConfigurationProperties(prefix="telnet")
+@Data
 public class TelnetController {
     private InputStream is;
     private PrintStream ps;
     private String prompt = "$";
+	private String server;
+	private String user;
+	private String password;
     
     @RequestMapping("/telnet")
     public String telnet(Model model) throws IOException{
-    	String server = "genbu";
-    	String user = "red";
-    	String password = "yakisoba";
     	
         TelnetClient telnet = null;
 
