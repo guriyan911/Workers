@@ -1,5 +1,6 @@
 package com.yuraku.workers.controller;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
@@ -11,27 +12,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Telnet接続テスト
  * charで戻り待ちをするので早いが日本語が表示できない
+ * 正規表現を使ってプロンプトチェックしていないので誤作動するかも
  */
 @Controller
 public class TelnetController {
-    private TelnetClient telnet = new TelnetClient();
-    private InputStream in;
-    private PrintStream out;
+    private InputStream is;
+    private PrintStream ps;
     private String prompt = "$";
     
     @RequestMapping("/telnet")
-    public String telnet(Model model){
+    public String telnet(Model model) throws IOException{
     	String server = "genbu";
     	String user = "red";
     	String password = "yakisoba";
     	
-      	try {
+        TelnetClient telnet = null;
+
+        try {
+        	telnet = new TelnetClient();
     		// Connect to the specified server
     		telnet.connect(server, 23);
 
     		// Get input and output stream references
-    		in = telnet.getInputStream();
-    		out = new PrintStream(telnet.getOutputStream());
+    		is = telnet.getInputStream();
+    		ps = new PrintStream(telnet.getOutputStream());
 
     		// Log the user on
     		readUntil("login: ");
@@ -42,33 +46,34 @@ public class TelnetController {
     		// Advance to a prompt
     		readUntil(prompt + " ");
     		
-    		sendCommand("ls");
+    		//sendCommand("ls");
     		sendCommand("\\ls"); // 頭に\をつけるとその時はLS_COLORSなどの設定が無効になる
-    		disconnect();
-    		
     		
     	} catch (Exception e) {
     		e.printStackTrace();
-    	}        return "telnet";
+    	} finally {
+			ps.close();
+			try {
+				is.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			if (telnet.isConnected()) {
+				try {
+					telnet.disconnect();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+    	}
+        return "telnet";
     }
     
-    public void su(String password) {
-    	try {
-    		write("su");
-    		readUntil("Password: ");
-    		write(password);
-    		prompt = "#";
-    		readUntil(prompt + " ");
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    }
-
     public String readUntil(String pattern) {
     	try {
     		char lastChar = pattern.charAt(pattern.length() - 1);
-    		StringBuffer sb = new StringBuffer();
-    		char ch = (char) in.read();
+    		StringBuilder sb = new StringBuilder();
+    		char ch = (char) is.read();
     		while (true) {
     			System.out.print(ch);
     			sb.append(ch);
@@ -77,7 +82,7 @@ public class TelnetController {
     					return sb.toString();
     				}
     			}
-    			ch = (char) in.read();
+    			ch = (char) is.read();
     		}
     	} catch (Exception e) {
     		e.printStackTrace();
@@ -87,8 +92,8 @@ public class TelnetController {
 
     public void write(String value) {
     	try {
-    		out.println(value);
-    		out.flush();
+    		ps.println(value);
+    		ps.flush();
     		System.out.println(value);
     	} catch (Exception e) {
     		e.printStackTrace();
@@ -107,7 +112,7 @@ public class TelnetController {
 
     public void disconnect() {
     	try {
-    		telnet.disconnect();
+    		
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
