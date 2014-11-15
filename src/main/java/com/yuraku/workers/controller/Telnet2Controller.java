@@ -16,69 +16,92 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Telnet接続テスト2
- * Streamを使うので日本語表示できるが全ての情報を表示する仕組みになっていない
+ * Telnet接続テスト2 Streamを使うので日本語表示できる
+ * Reader,Writer,Streamは閉じないとゴミとなってController違いでも影響を与える
  */
 @Controller
 public class Telnet2Controller {
 
-    
-    @RequestMapping("/telnet2")
-    public String telnet(Model model) throws IOException{
-    	String server = "genbu";
-    	String user = "red";
-    	String password = "yakisoba";
-    	String prompt = ".*@" + server + ":.*\\$ ";
-    	
-        // クライアントの生成
-        TelnetClient telnet = new TelnetClient();                
-      	try {
+	@RequestMapping("/telnet2")
+	public String telnet(Model model) {
+		String server = "genbu";
+		String user = "red";
+		String password = "yakisoba";
+		String prompt = ".*@" + server + ":.*\\$ ";
 
-            // サーバに接続
-            telnet.connect(server);                         
+		// クライアントの生成
+		TelnetClient telnet = null;
+		InputStream istream = null;
+		OutputStream ostream = null;
+		Reader reader = null;
+		Writer writer = null;
 
-            // 通信用の入出力ストリームの生成
-            InputStream istream = telnet.getInputStream();           
-            OutputStream ostream = telnet.getOutputStream();         
-            Reader reader = new InputStreamReader( istream );        
-            Writer writer = new OutputStreamWriter( ostream );       
+		try {
 
-            // 認証の実行
-            readMessage(reader, ".*login: $");                       
-            writer.write(user + "\n");                             
-            writer.flush();                                          
-            readMessage(reader, "Password: $");                      
-            writer.write(password + "\n");                         
-            writer.flush();                                          
+			telnet = new TelnetClient();
+			// サーバに接続
+			telnet.connect(server);
 
-            // プロンプト出力待ち
-            String output = readMessage(reader, ".*" + prompt);                      
-            System.out.print( output );                              
+			// 通信用の入出力ストリームの生成
+			istream = telnet.getInputStream();
+			ostream = telnet.getOutputStream();
+			reader = new InputStreamReader(istream);
+			writer = new OutputStreamWriter(ostream);
 
-            // コマンド実行
-            writer.write( "\\ls\n");                              
-            writer.flush();                                          
+			// 認証の実行
+			readMessage(reader, ".*login: $");
+			writer.write(user + "\n");
+			writer.flush();
+			readMessage(reader, "Password: $");
+			writer.write(password + "\n");
+			writer.flush();
 
-            // 実行結果取得
-            output = readMessage(reader, "(.*)" + prompt);    
+			// プロンプト出力待ち
+			readMessage(reader, prompt);
 
-            // 実行結果の出力
-            System.out.print( output );                              
+			// コマンド実行
+			writer.write("\\ls\n");// 頭に\をつけるとその時はLS_COLORSなどの設定が無効になる
+			writer.flush();
 
-            // ネットワークの切断
-            telnet.disconnect();                                     
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	} finally {
-    		if(telnet.isConnected()){
-    			telnet.disconnect();
-    		}
-    	}
-      	return "telnet";
-    }
-    
-	public String readMessage(Reader reader, String message) throws Exception {
-		long start = System.currentTimeMillis();
+			// 実行結果取得
+			readMessage(reader, prompt);
+
+			// ネットワークの切断
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				writer.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				reader.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				ostream.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				istream.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			if (telnet.isConnected()) {
+				try {
+					telnet.disconnect();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return "telnet";
+	}
+
+	static String readMessage(Reader reader, String message) throws Exception {
 
 		Pattern pattern = Pattern.compile(message, Pattern.DOTALL);// .のピリオドを\nも対象にする
 		StringBuilder sb = new StringBuilder();
@@ -89,22 +112,22 @@ public class Telnet2Controller {
 			if (c < 0)
 				break;
 			sb.append((char) c);
+			// 次のread()が入力をブロックするかも知れない時はmatchチェックする
 			if (reader.ready() == false) {
 				matcher = pattern.matcher(sb.toString());
-				if (matcher.matches())
+				if (matcher.find())
 					break;
 			}
 		}
 
-		if (matcher != null && matcher.find(0) && matcher.groupCount() >= 1) {
-			long stop = System.currentTimeMillis();
-		    System.out.println(message + "実行にかかった時間は " + (stop - start) + " ミリ秒です。");
-			return (matcher.group(1));
+		if (matcher != null){
+			if(matcher.find(0) && matcher.groupCount() >= 1) {
+				System.out.print(matcher.group(1));
+				return (matcher.group(1));
+			}
 		}
-		long stop = System.currentTimeMillis();
-	    System.out.println(message + "実行にかかった時間は " + (stop - start) + " ミリ秒です。");
-	    return null;
+		System.out.print(sb.toString());
+		return sb.toString();
 	}
 
 }
-
