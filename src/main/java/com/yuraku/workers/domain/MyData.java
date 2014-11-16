@@ -1,4 +1,4 @@
-package com.yuraku.workers.dao;
+package com.yuraku.workers.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

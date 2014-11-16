@@ -5,9 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.yuraku.workers.dao.MEmpRepository;
-import com.yuraku.workers.dao.MyData;
-import com.yuraku.workers.dao.MyDataRepository;
+import com.yuraku.workers.domain.MEmpRepository;
+import com.yuraku.workers.domain.MyData;
+import com.yuraku.workers.domain.MyDataRepository;
 
 @Controller
 public class IndexController extends BaseController {
