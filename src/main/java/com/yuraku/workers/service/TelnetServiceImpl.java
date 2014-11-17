@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,8 +41,20 @@ public class TelnetServiceImpl implements TelnetService {
 	 * @throws IOException
 	 */
 	@Override
-	public void connect() throws SocketException, IOException {
-		// プロンプト正規表現にサーバ名を含める
+	public boolean connect() throws IOException {
+	    InetAddress inetAddress = InetAddress.getByName(server);
+
+	    // isReachableメソッドでpingが実現できます。引数はタイムアウト(ミリ秒指定)。
+		try {
+			if (!inetAddress.isReachable(2000)) {
+				return false;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}
+
+	    // プロンプト正規表現にサーバ名を含める
 		this.prompt = prompt.replaceAll("servername", server);
 
 		try {
@@ -66,6 +79,7 @@ public class TelnetServiceImpl implements TelnetService {
 			e.printStackTrace();
 			throw e;
 		}
+		return true;
 	}
 
 	/**

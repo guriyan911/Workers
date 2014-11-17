@@ -1,5 +1,7 @@
 package com.yuraku.workers.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,19 +19,22 @@ public class Telnet3Controller {
 	 private TelnetService telnetService;
 
 	@RequestMapping("/telnet3")
-	public String telnet(Model model) {
+	public String telnet(Model model) throws IOException {
 
-		String message = "Telnet接続に成功しました。";
+		String message = "";
 		String datas = "";
-
-		try {
-			telnetService.connect();
-			datas = telnetService.write("\\ls");
-		}catch(Exception e){
-			message = "Telnet接続に失敗しました。";
+		if(telnetService.connect()){
+	        message = "サーバに接続しました。";
+		}else{
+			// 異常時はエラーコードを確認してメッセージを設定する
+	        message = "サーバからの応答がありません。";			
+	        model.addAttribute("message",message);
+			return "telnet3";
 		}
-        model.addAttribute("datas",datas);
+		
         model.addAttribute("message",message);
+		datas = telnetService.write("\\ls");
+        model.addAttribute("datas",datas);
 		return "telnet3";
 	}
 }

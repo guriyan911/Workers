@@ -15,12 +15,16 @@
 	th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
 </head>
 <body>
-	<div class="contents">
-		<p><a href="/index">index</a></p>
-		<p>Telnet接続状態</p>
-		<p th:text="${message}"></p>
-		<p>Telnet接続結果</p>
-		<pre th:text="${datas}"></pre>
+	<div class="container">
+		<p>
+			<a href="/index">index</a>
+		</p>
+		<dl>
+			<dt>Telnet接続状態</dt>
+			<dd th:text="${message}"></dd>
+			<dt>Telnet接続結果</dt>
+			<dd th:text="${datas}"></dd>
+		</dl>
 	</div>
 </body>
 </html>
