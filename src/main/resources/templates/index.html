@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>top page</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -15,13 +15,23 @@
 	th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
 </head>
 <body>
-	<p th:text="${msg}" />
-	<a href="/hello">hello</a>
-	<br/>
-	<a href="/telnet">telnet</a>
-	<br/>
-	<a href="/telnet2">telnet2</a>
-	<br/>
-	<a href="/telnet3">telnet3</a>
+    <div class="container">
+        <h3>SpringBoot学習スタートアップ</h3>
+        <p th:text="${msg}">システムメッセージ</p>
+        <a href="/hello">hello</a>
+        <br/>
+        <a href="/telnet">telnet</a>
+        <br/>
+        <a href="/telnet2">telnet2</a>
+        <br/>
+        <a href="/telnet3">telnet3</a>
+        <div class="container">
+            <p>参考リンク</p>
+            <ul>
+                <li><a href="http://www.sakc.jp/blog/archives/8439">Bootstrapまとめ10サイト</a></li>
+                <li><a href="http://www.sakc.jp/blog/archives/8439">Bootstrapまとめ10サイト</a></li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
