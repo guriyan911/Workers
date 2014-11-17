@@ -1,8 +1,11 @@
 package com.yuraku.workers.controller;
 
+import java.util.Locale;
+
 import lombok.val;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +20,13 @@ public class IndexController extends BaseController {
     MyDataRepository myDataRep;
     @Autowired
     MEmpRepository mEmpRep;
-
+    @Autowired
+    MessageSource messageSource;
+    
     @RequestMapping("/index")
-    public String index(Model model){
-        model.addAttribute("msg","SpringBootへようこそ！");
+    public String index(Model model,Locale locale){
+    	String welcome = messageSource.getMessage("m.welcome", null, locale);
+        model.addAttribute("msg", welcome);
         return "index";
     }
 

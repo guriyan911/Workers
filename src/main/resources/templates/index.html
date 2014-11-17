@@ -16,10 +16,10 @@
 </head>
 <body>
     <div class="container">
-        <h3 th:text="#{mScreenName}">SpringBoot学習スタートアップ</h3>
-        <p th:text="${msg}">システムメッセージ</p>
-        <p th:text="#{field1}"></p>
-        <p th:text="#{success}"></p>
+        <h3 th:text="#{m.screenName}">SpringBoot学習スタートアップ</h3>
+        <p th:utext="${msg}">システムメッセージ</p>
+        <p th:text="#{m.field1}"></p>
+        <p th:text="#{m.success}"></p>
         <a href="/hello">hello</a>
         <br/>
         <a href="/telnet">telnet</a>
