@@ -84,7 +84,7 @@ public class TelnetServiceImpl implements TelnetService {
 
 	/**
 	 * Telnetで接続先に命令する
-	 * @param message
+	 * @param message 実行する命令(\nは不要)
 	 * @return String 命令結果
 	 * @throws IOException
 	 */
@@ -100,6 +100,7 @@ public class TelnetServiceImpl implements TelnetService {
 
 	/**
 	 * クローズ処理
+	 * 呼び出す時はfinally句で呼び出してもらう。
 	 * @throws IOException
 	 */
 	@Override
@@ -113,6 +114,13 @@ public class TelnetServiceImpl implements TelnetService {
 		}
 	}
 
+	/**
+	 * 終了文字列まで読み込むリード処理
+	 * @param reader 受信した文字列
+	 * @param message 終了文字列
+	 * @return
+	 * @throws IOException
+	 */
 	static String readMessage(Reader reader, String message)
 		throws IOException {
 

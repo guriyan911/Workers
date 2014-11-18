@@ -25,6 +25,9 @@ public class IndexController extends BaseController {
     
     @RequestMapping("/index")
     public String index(Model model,Locale locale){
+    	// localeをもらえばmessages_xx.propertiesから値は取れる
+    	// 1つだけpropertiesを置くならmessages_ja_JP.propertiesを置くとか。そしたら下ので取得する。
+    	// Thymeleafが#{msg}で読み出すのはこの設定と全く関係がない。
     	String welcome = messageSource.getMessage("m.welcome", null, locale);
         model.addAttribute("msg", welcome);
         return "index";

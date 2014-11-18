@@ -2,6 +2,9 @@ package com.yuraku.workers.constants;
 
 public class ReturnCodeConstants {
 
+	/**
+	 * 他からのインスタンス生成不可とする
+	 */
 	private ReturnCodeConstants(){}
 	
 	/**

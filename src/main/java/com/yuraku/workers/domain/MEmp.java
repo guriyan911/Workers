@@ -12,6 +12,7 @@ import lombok.Data;
 @Data
 public class MEmp {
 
+	// もしM_T_NAMEのような列名だと@Column(name="m_t_name")が必要。残念。
     @Id
     @GeneratedValue
     protected Integer id;

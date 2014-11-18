@@ -11,10 +11,11 @@ public abstract class BaseController {
 
 	@Bean
     public Filter characterEncodingFilter() {
-      CharacterEncodingFilter filter = new CharacterEncodingFilter();
-      filter.setEncoding("UTF-8");
-      filter.setForceEncoding(true);
-      return filter;
+		// この記述はApp.javaでもいいのでは？
+	      CharacterEncodingFilter filter = new CharacterEncodingFilter();
+	      filter.setEncoding("UTF-8");
+	      filter.setForceEncoding(true);
+	      return filter;
     }
 }
 

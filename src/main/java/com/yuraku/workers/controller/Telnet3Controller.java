@@ -18,9 +18,8 @@ public class Telnet3Controller {
 	 @Autowired
 	 private TelnetService telnetService;
 
-	 //メッセージを下記のような形で参照はできそうだが専用クラスでやるべき？簡単にmessages_jaやmessages_enを利用する仕組みはないのか？
-	 //messages.propertiesで状況に応じて設定してくれる？試してみる価値はありそう。
-	 //@ConfigurationProperties(locations = "classpath:mail.properties", ignoreUnknownFields = false, prefix = "mail")
+	 // messages_jaやmessages_enを利用する仕組みはApp.javaとIndexController.javaで記載済み
+	 // あまりいい方法とは思えないので他に方法があれば知りたい
 
 	@RequestMapping("/telnet3")
 	public String telnet(Model model) throws IOException {
