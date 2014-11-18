@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="#{m.admin_question_input}">top page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="../static/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/3.3.0/css/bootstrap.min.css}"
+	rel="stylesheet" media="screen" />
+<link href="../static/css/workers.css"
+	th:href="@{/css/workers.css}"
+	rel="stylesheet" media="screen" />
+<script src="../static/js/bootstrap.min.js"
+	th:src="@{/webjars/bootstrap/3.3.0/js/bootstrap.min.js}"></script>
+<script src="../static/js/jquery.min.js"
+	th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+</head>
+<body>
+  <div class="container">
+    <a href="/index">indexに戻る</a>
+  </div>
+	<div class="container">
+		<h1 th:text="#{m.admin_question_input}">title</h1>
+    <form class="well" action="#" th:action="@{/admin_question_entry}" th:object="${ttQuizees}" method="post">
+      <label>問題：</label>
+      <input type="text" class="col-xs-4" placeholder="Type something…" th:field="*{question}" />
+      <span class="help-inline">問題は必須です。</span>
+      <div class="form-group has-error">
+        <label class="label" th:if="${#fields.hasErrors('question')}" th:errors="*{question}" ></label>
+      </div>
+      <label>解答：</label>
+      <input type="text" class="col-xs-2" placeholder="Type something…" th:field="*{answer}" />
+      <span class="help-inline">解答は必須です。</span>
+      <div class="form-group error">
+        <span th:if="${#fields.hasErrors('answer')}" th:errors="*{answer}" ></span>
+      </div>
+      <label>NG1：</label>
+      <input type="text" class="col-xs-3" placeholder="Type something…" th:field="*{error1}" />
+      <div class="form-group error">
+        <span th:if="${#fields.hasErrors('error1')}" th:errors="*{error1}" ></span>
+      </div>
+      <label>NG2：</label>
+      <input type="text" class="input-xlarge" placeholder="Type something…" th:field="*{error2}" />
+      <div class="form-group error">
+        <span th:if="${#fields.hasErrors('error2')}" th:errors="*{error2}" ></span>
+      </div>
+      <label>NG3：</label>
+      <input type="text" class="input-xlarge" placeholder="Type something…" th:field="*{error3}" />
+      <div class="form-group error">
+        <span th:if="${#fields.hasErrors('error3')}" th:errors="*{error3}" ></span>
+      </div>
+      <button type="submit">登録</button>
+    </form>
+	</div>
+</body>
+</html>
