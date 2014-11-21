@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import javax.sql.DataSource;
 
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -57,10 +60,10 @@ public class App  extends WebMvcConfigurerAdapter {
 		return messageSource;
 	}
 
-	// 別Datasourceの定義を書けるか？
+	// 別Datasourceの定義を書けるか？⇒問題なし
 	@Bean(name="genbuDs")
 	@ConfigurationProperties(prefix="subdatasource.genbumysql")
-	public DataSource secondaryDataSource() {
+	public DataSource secDataSource() {
 	    return DataSourceBuilder.create().build();
 	}
 

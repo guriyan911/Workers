@@ -1,15 +1,11 @@
 package com.yuraku.workers.controller;
 
-import javax.sql.DataSource;
 import javax.validation.Valid;
 
 import lombok.val;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,7 +27,7 @@ public class AdminQuestionController extends BaseController {
     
     @RequestMapping(value="/admin_question_input", method=RequestMethod.GET)
     public String input(TtQuizees ttQuizees){
-    	val test= jdbc.queryForMap("SELECT * FROM m_my_rule");
+    	val test= jdbc.queryForList("select * from m_my_rule");
         return "admin_question_input";
     }
 
