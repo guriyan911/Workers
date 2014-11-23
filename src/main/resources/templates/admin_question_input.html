@@ -50,6 +50,14 @@
       </div>
       <button type="submit">登録</button>
     </form>
+    <div class="container">
+      <table class="table table-bordered">
+          <tr data-th-each="myRule : ${myRuleList}" th:class="${myRuleStat.even}? 'even' : 'odd'">
+              <td data-th-text="${myRule.ruleId}"></td>
+              <td data-th-text="${myRule.ruleName}"></td>
+          </tr>
+      </table>
+    </div>
 	</div>
 </body>
 </html>

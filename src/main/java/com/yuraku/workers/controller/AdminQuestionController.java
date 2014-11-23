@@ -1,17 +1,23 @@
 package com.yuraku.workers.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import lombok.val;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.yuraku.workers.domain.MtMyRule;
 import com.yuraku.workers.domain.TtQuizees;
 import com.yuraku.workers.domain.TtQuizeesRepository;
 
@@ -26,8 +32,13 @@ public class AdminQuestionController extends BaseController {
     TtQuizeesRepository ttQuizeesRepository;
     
     @RequestMapping(value="/admin_question_input", method=RequestMethod.GET)
-    public String input(TtQuizees ttQuizees){
-    	val test= jdbc.queryForList("select * from m_my_rule");
+    public String input(TtQuizees ttQuizees,Model model){
+    	// List<Map<String, Object>>は取り回すにはとっても不便
+    	val test= jdbc.queryForList("select * from mt_my_rule");
+    	// RowMapperを使ってEntityクラスにデータを入れる
+    	RowMapper<MtMyRule> mapper = new BeanPropertyRowMapper<MtMyRule>(MtMyRule.class);
+    	List<MtMyRule> myRuleList = jdbc.query("select * from mt_my_rule", mapper);
+    	model.addAttribute("myRuleList",myRuleList);
         return "admin_question_input";
     }
 
