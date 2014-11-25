@@ -24,20 +24,25 @@ import com.yuraku.workers.domain.TtQuizeesRepository;
 @Controller
 public class AdminQuestionController extends BaseController {
 	
-	@Autowired 
-    @Qualifier("jdbcGenbu") 
-    protected JdbcTemplate jdbc;
-	
+	@Autowired
+	@Qualifier("jdbcGenbu")
+    private JdbcTemplate genbuJdbcTemplate;
+
+	@Autowired
+	@Qualifier("jdbcAir")
+    private JdbcTemplate airJdbcTemplate;
+		
     @Autowired
     TtQuizeesRepository ttQuizeesRepository;
     
     @RequestMapping(value="/admin_question_input", method=RequestMethod.GET)
     public String input(TtQuizees ttQuizees,Model model){
     	// List<Map<String, Object>>は取り回すにはとっても不便
-    	val test= jdbc.queryForList("select * from mt_my_rule");
+    	val test= genbuJdbcTemplate.queryForList("select * from mt_my_rule");
     	// RowMapperを使ってEntityクラスにデータを入れる
     	RowMapper<MtMyRule> mapper = new BeanPropertyRowMapper<MtMyRule>(MtMyRule.class);
-    	List<MtMyRule> myRuleList = jdbc.query("select * from mt_my_rule", mapper);
+    	List<MtMyRule> myRuleList = genbuJdbcTemplate.query("select * from mt_my_rule", mapper);
+    	model.addAttribute("test",test);
     	model.addAttribute("myRuleList",myRuleList);
         return "admin_question_input";
     }
