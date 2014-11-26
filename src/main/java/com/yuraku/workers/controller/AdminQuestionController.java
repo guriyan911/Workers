@@ -41,7 +41,9 @@ public class AdminQuestionController extends BaseController {
     	val test= genbuJdbcTemplate.queryForList("select * from mt_my_rule");
     	// RowMapperを使ってEntityクラスにデータを入れる
     	RowMapper<MtMyRule> mapper = new BeanPropertyRowMapper<MtMyRule>(MtMyRule.class);
-    	List<MtMyRule> myRuleList = genbuJdbcTemplate.query("select * from mt_my_rule", mapper);
+    	String[] key = {"%0%","%も%"};
+		List<MtMyRule> myRuleList = genbuJdbcTemplate
+				.query("select * from mt_my_rule where rule_id like ? and rule_name like ?", key, mapper);
     	model.addAttribute("test",test);
     	model.addAttribute("myRuleList",myRuleList);
         return "admin_question_input";
